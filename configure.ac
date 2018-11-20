@@ -35,5 +35,5 @@ AC_CONFIG_FILES([Makefile
                  libs/Makefile
                  libs/Inet/Makefile
                  libs/Protocols/Makefile
-                 src/Protocol/Makefile])
+                 ])
 AC_OUTPUT
