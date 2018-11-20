@@ -31,5 +31,9 @@ CXXFLAGS="$CXXFLAGS -std=c++11"
 # Checks for library functions.
 
 AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+                 src/Makefile
+                 libs/Makefile
+                 libs/Inet/Makefile
+                 libs/Protocols/Makefile
+                 src/Protocol/Makefile])
 AC_OUTPUT

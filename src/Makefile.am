@@ -2,6 +2,9 @@ bin_PROGRAMS=vimtest main server client
 lib_LIBRARIES=libcommon.a
 lib_LTLIBRARIES=libcommon.la
 
+AM_CPPFLAGS=-I$(top_builddir)/libs/Inet \
+			-I$(top_builddir)/libs/Protocols
+
 vimtest_SOURCES=vimtest.cpp
 vimtest_LDADD = libcommon.a \
 				-lssl \
@@ -15,13 +18,17 @@ main_LDADD = libcommon.a \
 
 server_SOURCES=server.cpp
 server_LDADD = libcommon.a \
-			 -lpthread \
-			 -lssl \
-			 -lcrypto \
-			 -lglog
+			   $(top_builddir)/libs/Inet/libinet.a \
+			   $(top_builddir)/libs/Protocols/libprotocol.a \
+			   -lpthread \
+			   -lssl \
+			   -lcrypto \
+			   -lglog
 
 client_SOURCES=client.cpp
 client_LDADD = libcommon.a \
+			   $(top_builddir)/libs/Inet/libinet.a \
+			   $(top_builddir)/libs/Protocols/libprotocol.a \
 			   -lssl \
 			   -lcrypto \
 			   -lglog
@@ -29,16 +36,7 @@ client_LDADD = libcommon.a \
 libSources = Elevator.cpp \
 	Elevator.h \
 	Person.cpp \
-	Person.h \
-	Protocol.cpp \
-	Protocol.h \
-	ProtocolSimple.cpp \
-	ProtocolSimple.h \
-	ProtocolHttp.cpp \
-	ProtocolHttp.h \
-	Socket.cpp \
-	Socket.tpp \
-	Socket.h 
+	Person.h
 
 libcommon_a_SOURCES= \
 					$(libSources)
