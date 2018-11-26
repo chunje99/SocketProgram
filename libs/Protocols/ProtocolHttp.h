@@ -11,8 +11,9 @@ class ProtocolHttp: public Protocol
         using Protocol::Protocol;
         ProtocolHttp(IOSocket& socket);
         ~ProtocolHttp();
-        void sendMessage(std::string const& url, std::string const& message) override;
+        void sendMessage(std::string const& message) override;
         void recvMessage(std::string & message) override;
+        void startProtocol() override;
 		void setRequestMethod(std::string method);
 		void setRequestPath(std::string path);
         void setRequestVersion(std::string version);

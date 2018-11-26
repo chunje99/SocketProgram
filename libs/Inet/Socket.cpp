@@ -274,9 +274,9 @@ ConnectSocket::ConnectSocket(std::string const& host, int port)
 }
 */
 
-ConnectSocket::ConnectSocket(std::string const& host, int port)
+ConnectSocket::ConnectSocket(std::string const& host, int port, SSLCtx* ctx)
     : IOSocket(
-            SSLSocket(::socket(PF_INET, SOCK_STREAM, 0), new SSLCtx(0)))
+            SSLSocket(::socket(PF_INET, SOCK_STREAM, 0), ctx))
 {
     struct sockaddr_in serverAddr{};
     serverAddr.sin_family       = AF_INET;
@@ -289,6 +289,10 @@ ConnectSocket::ConnectSocket(std::string const& host, int port)
         throw std::runtime_error(errmsg);
     }
     LOG(INFO) << "connect:"  << getSSL() << std::endl;
+
+    if(getSslCtx()==nullptr)
+        return;
+
     try{
         newSSL();
     }catch(...){

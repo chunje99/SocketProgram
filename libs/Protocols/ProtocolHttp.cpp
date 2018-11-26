@@ -32,11 +32,13 @@ ProtocolHttp::~ProtocolHttp(){
     }
 }
 
-void ProtocolHttp::sendMessage(std::string const& url, std::string const& message)
+void ProtocolHttp::sendMessage(std::string const& message)
 {
-    m_socket.putMessage(url.c_str(), url.size());
     m_socket.putMessage(message.c_str(), message.size());
-    m_socket.putClose();
+}
+
+void ProtocolHttp::startProtocol()
+{
 }
 
 class StringSizer

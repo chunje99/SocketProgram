@@ -13,19 +13,9 @@ class Protocol
         Protocol(IOSocket& socket);
         ~Protocol();
 
-        virtual void sendMessage(std::string const& url, std::string const& message) = 0;
+        virtual void sendMessage(std::string const& message) = 0;
         virtual void recvMessage(std::string & message) = 0;
+        virtual void startProtocol() = 0;
 };
 
-class ProtocolS
-{
-    protected:
-        IOSocketS&   m_socketS;
-    public:
-        ProtocolS(IOSocketS& socketS);
-        ~ProtocolS();
-
-        virtual void sendMessage(std::string const& url, std::string const& message) = 0;
-        virtual void recvMessage(std::string & message) = 0;
-};
 #endif

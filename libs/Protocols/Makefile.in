@@ -140,13 +140,14 @@ libprotocol_a_AR = $(AR) $(ARFLAGS)
 libprotocol_a_LIBADD =
 am__objects_1 = libprotocol_a-Protocol.$(OBJEXT) \
 	libprotocol_a-ProtocolSimple.$(OBJEXT) \
+	libprotocol_a-ProtocolFtp.$(OBJEXT) \
 	libprotocol_a-ProtocolHttp.$(OBJEXT)
 am_libprotocol_a_OBJECTS = $(am__objects_1)
 libprotocol_a_OBJECTS = $(am_libprotocol_a_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libprotocol_la_LIBADD =
 am__objects_2 = libprotocol_la-Protocol.lo \
-	libprotocol_la-ProtocolSimple.lo \
+	libprotocol_la-ProtocolSimple.lo libprotocol_la-ProtocolFtp.lo \
 	libprotocol_la-ProtocolHttp.lo
 am_libprotocol_la_OBJECTS = $(am__objects_2)
 libprotocol_la_OBJECTS = $(am_libprotocol_la_OBJECTS)
@@ -367,6 +368,8 @@ libSources = \
 	Protocol.h \
 	ProtocolSimple.cpp \
 	ProtocolSimple.h \
+	ProtocolFtp.cpp \
+	ProtocolFtp.h \
 	ProtocolHttp.cpp \
 	ProtocolHttp.h
 
@@ -495,9 +498,11 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_a-Protocol.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_a-ProtocolFtp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_a-ProtocolHttp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_a-ProtocolSimple.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_la-Protocol.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_la-ProtocolFtp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_la-ProtocolHttp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_la-ProtocolSimple.Plo@am__quote@
 
@@ -550,6 +555,20 @@ libprotocol_a-ProtocolSimple.obj: ProtocolSimple.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_a-ProtocolSimple.obj `if test -f 'ProtocolSimple.cpp'; then $(CYGPATH_W) 'ProtocolSimple.cpp'; else $(CYGPATH_W) '$(srcdir)/ProtocolSimple.cpp'; fi`
 
+libprotocol_a-ProtocolFtp.o: ProtocolFtp.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_a-ProtocolFtp.o -MD -MP -MF $(DEPDIR)/libprotocol_a-ProtocolFtp.Tpo -c -o libprotocol_a-ProtocolFtp.o `test -f 'ProtocolFtp.cpp' || echo '$(srcdir)/'`ProtocolFtp.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_a-ProtocolFtp.Tpo $(DEPDIR)/libprotocol_a-ProtocolFtp.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ProtocolFtp.cpp' object='libprotocol_a-ProtocolFtp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_a-ProtocolFtp.o `test -f 'ProtocolFtp.cpp' || echo '$(srcdir)/'`ProtocolFtp.cpp
+
+libprotocol_a-ProtocolFtp.obj: ProtocolFtp.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_a-ProtocolFtp.obj -MD -MP -MF $(DEPDIR)/libprotocol_a-ProtocolFtp.Tpo -c -o libprotocol_a-ProtocolFtp.obj `if test -f 'ProtocolFtp.cpp'; then $(CYGPATH_W) 'ProtocolFtp.cpp'; else $(CYGPATH_W) '$(srcdir)/ProtocolFtp.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_a-ProtocolFtp.Tpo $(DEPDIR)/libprotocol_a-ProtocolFtp.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ProtocolFtp.cpp' object='libprotocol_a-ProtocolFtp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_a-ProtocolFtp.obj `if test -f 'ProtocolFtp.cpp'; then $(CYGPATH_W) 'ProtocolFtp.cpp'; else $(CYGPATH_W) '$(srcdir)/ProtocolFtp.cpp'; fi`
+
 libprotocol_a-ProtocolHttp.o: ProtocolHttp.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_a-ProtocolHttp.o -MD -MP -MF $(DEPDIR)/libprotocol_a-ProtocolHttp.Tpo -c -o libprotocol_a-ProtocolHttp.o `test -f 'ProtocolHttp.cpp' || echo '$(srcdir)/'`ProtocolHttp.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_a-ProtocolHttp.Tpo $(DEPDIR)/libprotocol_a-ProtocolHttp.Po
@@ -577,6 +596,13 @@ libprotocol_la-ProtocolSimple.lo: ProtocolSimple.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ProtocolSimple.cpp' object='libprotocol_la-ProtocolSimple.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_la-ProtocolSimple.lo `test -f 'ProtocolSimple.cpp' || echo '$(srcdir)/'`ProtocolSimple.cpp
+
+libprotocol_la-ProtocolFtp.lo: ProtocolFtp.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_la-ProtocolFtp.lo -MD -MP -MF $(DEPDIR)/libprotocol_la-ProtocolFtp.Tpo -c -o libprotocol_la-ProtocolFtp.lo `test -f 'ProtocolFtp.cpp' || echo '$(srcdir)/'`ProtocolFtp.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_la-ProtocolFtp.Tpo $(DEPDIR)/libprotocol_la-ProtocolFtp.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ProtocolFtp.cpp' object='libprotocol_la-ProtocolFtp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_la-ProtocolFtp.lo `test -f 'ProtocolFtp.cpp' || echo '$(srcdir)/'`ProtocolFtp.cpp
 
 libprotocol_la-ProtocolHttp.lo: ProtocolHttp.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_la-ProtocolHttp.lo -MD -MP -MF $(DEPDIR)/libprotocol_la-ProtocolHttp.Tpo -c -o libprotocol_la-ProtocolHttp.lo `test -f 'ProtocolHttp.cpp' || echo '$(srcdir)/'`ProtocolHttp.cpp

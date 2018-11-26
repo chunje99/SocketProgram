@@ -1,4 +1,4 @@
-bin_PROGRAMS=vimtest main server client
+bin_PROGRAMS=vimtest main server client ftpServer
 lib_LIBRARIES=libcommon.a
 lib_LTLIBRARIES=libcommon.la
 
@@ -18,6 +18,15 @@ main_LDADD = libcommon.a \
 
 server_SOURCES=server.cpp
 server_LDADD = libcommon.a \
+			   $(top_builddir)/libs/Inet/libinet.a \
+			   $(top_builddir)/libs/Protocols/libprotocol.a \
+			   -lpthread \
+			   -lssl \
+			   -lcrypto \
+			   -lglog
+
+ftpServer_SOURCES=ftpServer.cpp
+ftpServer_LDADD = libcommon.a \
 			   $(top_builddir)/libs/Inet/libinet.a \
 			   $(top_builddir)/libs/Protocols/libprotocol.a \
 			   -lpthread \

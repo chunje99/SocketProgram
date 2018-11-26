@@ -8,6 +8,8 @@ libSources = \
 	Protocol.h \
 	ProtocolSimple.cpp \
 	ProtocolSimple.h \
+	ProtocolFtp.cpp \
+	ProtocolFtp.h \
 	ProtocolHttp.cpp \
 	ProtocolHttp.h
 

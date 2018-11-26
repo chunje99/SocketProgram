@@ -7,7 +7,8 @@ class ProtocolSimple: public Protocol
 {
     public:
         using Protocol::Protocol;
-        void sendMessage(std::string const& url, std::string const& message) override;
+        void sendMessage(std::string const& message) override;
         void recvMessage(std::string & message) override;
+        void startProtocol() override;
 };
 #endif

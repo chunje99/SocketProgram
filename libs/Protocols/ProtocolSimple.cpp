@@ -2,11 +2,13 @@
 #include "Socket.h"
 #include "iostream"
 
-void ProtocolSimple::sendMessage(std::string const& url, std::string const& message)
+void ProtocolSimple::sendMessage(std::string const& message)
 {
-    m_socket.putMessage(url.c_str(), url.size());
     m_socket.putMessage(message.c_str(), message.size());
-    m_socket.putClose();
+}
+
+void ProtocolSimple::startProtocol()
+{
 }
 
 class StringSizer

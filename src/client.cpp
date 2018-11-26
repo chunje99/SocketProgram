@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
     }
     try{
         //ConnectSocket connect(host, port);
-        ConnectSocket connect(host, port);
+        ConnectSocket connect(host, port, nullptr);
         //ProtocolSimple simpleConnect(connect);
         ProtocolHttp httpConnect(connect);
         httpConnect.setRequestHost(argv[1]);

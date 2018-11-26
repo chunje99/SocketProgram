@@ -75,9 +75,9 @@ class IOSocket: public SSLSocket
 class ConnectSocket: public IOSocket
 {
     public:
-        ConnectSocket(std::string const& host, int port);
+        ConnectSocket(std::string const& host, int port, SSLCtx* ctx);
     private:
-        SSLCtx* m_sslctx;
+        //SSLCtx* m_sslctx;
 };
 
 

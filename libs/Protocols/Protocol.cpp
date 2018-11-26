@@ -6,10 +6,3 @@ Protocol::Protocol(IOSocket& socket)
 
 Protocol::~Protocol()
 {}
-
-ProtocolS::ProtocolS(IOSocketS& socketS)
-    : m_socketS(socketS) 
-{}
-
-ProtocolS::~ProtocolS()
-{}
