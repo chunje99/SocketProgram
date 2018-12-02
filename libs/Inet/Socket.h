@@ -65,7 +65,7 @@ class IOSocket: public SSLSocket
         //IOSocketS(int socket);
         IOSocket(SSLSocket&& sslSocket);
         template<typename F>
-        std::size_t getMessage(char* buffer, std::size_t size,
+        std::size_t getMessage(char* buffer, std::size_t size, int timeout,
                 F scanForEnd = [](std::size_t){return false;});
         int         putMessage(char const* buffer, std::size_t size);
         void        putClose();

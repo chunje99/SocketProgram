@@ -12,8 +12,8 @@ class ProtocolFtp: public Protocol
         using Protocol::Protocol;
         ProtocolFtp(IOSocket& socket);
         ~ProtocolFtp();
-        void sendMessage(std::string const& message) override;
-        void recvMessage(std::string & message) override;
+        void sendMessage(std::string const& message, int timeout=-1) override;
+        void recvMessage(std::string & message, int timeout=-1) override;
         void startProtocol() override;
 
 
@@ -25,6 +25,11 @@ class ProtocolFtp: public Protocol
         int HandleCWD();
         int HandleRETR();
         int HandleTYPE();
+        int HandlePWD();
+        int HandleSTOR();
+        int HandleSIZE();
+        int HandlePASV();
+        int HandleMKD();
 
     private:
         int m_status;

@@ -398,6 +398,11 @@ ServerSocket::ServerSocket(int port, SSLCtx* ctx)
     int bf = 1;
     setsockopt(getSocket(), SOL_SOCKET, SO_REUSEADDR, &bf, sizeof(bf));
 
+   //struct timeval tv;
+   //tv.tv_sec = 5;
+   //tv.tv_usec = 0;
+   //setsockopt(getSocket(), SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+
     LOG(INFO) << "ServerSocket:: bind" << std::endl;
     if(::bind(getSocket(), (struct sockaddr*)&serverAddr, sizeof(serverAddr)) != 0 ){
         close();
@@ -450,6 +455,7 @@ IOSocket ServerSocket::accept()
         throw std::runtime_error(errmsg);
     }
     LOG(INFO) << "accept OK : " << newSocket << std::endl;
+
     SSLSocket newssl(newSocket, getSslCtx());
 
     if(getSslCtx()){

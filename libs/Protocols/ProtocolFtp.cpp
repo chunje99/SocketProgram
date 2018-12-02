@@ -10,6 +10,8 @@
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <sys/stat.h>
+#include <time.h>
 
 ProtocolFtp::ProtocolFtp(IOSocket& socket)
     : Protocol(socket)
@@ -22,17 +24,40 @@ ProtocolFtp::~ProtocolFtp(){
     LOG(INFO) << "~ProtocolFtp()" << std::endl;
 }
 
-void ProtocolFtp::sendMessage(std::string const& message)
+void ProtocolFtp::sendMessage(std::string const& message, int timeout)
 {
     m_socket.putMessage(message.c_str(), message.size());
+}
+
+void ProtocolFtp::recvMessage(std::string & message, int timeout)
+{
+	message.clear();
+	message.reserve(8092);
+	char buffer[8093];
+    std::size_t const dataMax = 8092;
+
+	std::size_t got = m_socket.getMessage(buffer, dataMax , -1,  [](std::size_t s, const char* buf) -> int { return true;});
+    if(got == 0){
+        std::string errmsg = std::string("ProtocolFtp::") + __func__+": got == 0";
+        throw std::runtime_error(errmsg);
+    }
+	LOG(INFO).write(buffer, got);
+    message.assign(buffer,got);
+	//   if(got == 0)
+	//      break;
+	//}
 }
 
 void ProtocolFtp::startProtocol()
 {
 	int retVal;
-	retVal = HandleLogin();
-	if(retVal != 0)
-		return;
+	m_sendMessage = "220 (ho80 server)\r\n";
+	sendMessage(m_sendMessage);
+	LOG(INFO) << "[server]::send " << m_sendMessage << std::endl;
+    while(HandleLogin() != 0 ){
+    }
+	//if(retVal != 0)
+	//	return;
 
 	while(1){
 		recvMessage(m_recvMessage);
@@ -80,7 +105,7 @@ void ProtocolFtp::startProtocol()
 		} else if(m_recvMessage.find("MIC") != std::string::npos){//	RFC 2228	무결성 보호 명령
             HandleError(500);
 		} else if(m_recvMessage.find("MKD") != std::string::npos){//		디렉터리 만들기
-            HandleError(500);
+            HandleMKD();
 		} else if(m_recvMessage.find("MLSD") != std::string::npos){//	RFC 3659	디렉터리의 이름이 지정되면 디렉터리의 내용을 보여줌
             HandleError(500);
 		} else if(m_recvMessage.find("MLST") != std::string::npos){//	RFC 3659	명령 줄에 입력한 데이터만 제공.
@@ -96,7 +121,7 @@ void ProtocolFtp::startProtocol()
 		} else if(m_recvMessage.find("PASS") != std::string::npos){//		암호.
             HandleError(500);
 		} else if(m_recvMessage.find("PASV") != std::string::npos){//		수동 모드 들어가기.
-            HandleError(500);
+            HandlePASV();
 		} else if(m_recvMessage.find("PBSZ") != std::string::npos){//	RFC 2228	보호 버퍼 크기
             HandleError(500);
 		} else if(m_recvMessage.find("PORT") != std::string::npos){//		서버 접속에 필요한 주소 및 포트 지정.
@@ -104,7 +129,7 @@ void ProtocolFtp::startProtocol()
 		} else if(m_recvMessage.find("PROT") != std::string::npos){//	RFC 2228	데이터 채널 보호 수준.
             HandleError(500);
 		} else if(m_recvMessage.find("PWD") != std::string::npos){//	작업 디렉터리 인쇄. 호스트 컴퓨터의 현재 디렉터리 반환.
-            HandleError(500);
+            HandlePWD();
 		} else if(m_recvMessage.find("QUIT") != std::string::npos){//		연결 끊기.
             HandleError(500);
 		} else if(m_recvMessage.find("REIN") != std::string::npos){//		연결 다시 초기화.
@@ -122,13 +147,13 @@ void ProtocolFtp::startProtocol()
 		} else if(m_recvMessage.find("SITE") != std::string::npos){//		지정한 명령어를 원격 서버로 송신.
             HandleError(500);
 		} else if(m_recvMessage.find("SIZE") != std::string::npos){//	RFC 3659	파일 크기 반환
-            HandleError(500);
+            HandleSIZE();
 		} else if(m_recvMessage.find("SMNT") != std::string::npos){//		파일 구조 마운트.
             HandleError(500);
 		} else if(m_recvMessage.find("STAT") != std::string::npos){//		현재 상태 반환.
             HandleError(500);
 		} else if(m_recvMessage.find("STOR") != std::string::npos){//		데이터 입력 및 서버 쪽 파일로 저장.
-            HandleError(500);
+            HandleSTOR();
 		} else if(m_recvMessage.find("STOU") != std::string::npos){//		파일을 저만의 방식으로 저장.
             HandleError(500);
 		} else if(m_recvMessage.find("STRU") != std::string::npos){//		전송 구조 설정.
@@ -155,6 +180,9 @@ int ProtocolFtp::HandleError(int err)
         case 500:
             m_sendMessage = "500 Syntax error, command unrecognized.\n";
             break;
+        case 530:
+            m_sendMessage = "530 Please Login again.\n";
+            break;
         default:
             m_sendMessage = "500 Syntax error, command unrecognized.\n";
             break;
@@ -166,14 +194,26 @@ int ProtocolFtp::HandleError(int err)
 
 int ProtocolFtp::HandleLogin()
 {
-	m_sendMessage = "220 (ho80 server)\n";
-	sendMessage(m_sendMessage);
+    try{
+        recvMessage(m_recvMessage, 5);
+        LOG(INFO) << "[server]::message " << m_recvMessage << std::endl;
+    } catch(std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+        m_sendMessage = "530 Login incorrect.\r\n";
+        sendMessage(m_sendMessage);
 	LOG(INFO) << "[server]::send " << m_sendMessage << std::endl;
-	recvMessage(m_recvMessage);
-	LOG(INFO) << "[server]::message " << m_recvMessage << std::endl;
+        return -1;
+    }catch(...){
+        std::cout << "catch" << std::endl;
+        return -1;
+    }
+    if(m_recvMessage.find("USER") == std::string::npos){
+        HandleError(530);
+        return -1;
+    }
 	m_sendMessage = "331 Please specify the password.\n";
 	sendMessage(m_sendMessage);
-	recvMessage(m_recvMessage);
+	recvMessage(m_recvMessage, 5);
 	LOG(INFO) << "[server]::message " << m_recvMessage << std::endl;
 	m_sendMessage = "230 Login successful.\n";
 	sendMessage(m_sendMessage);
@@ -205,6 +245,10 @@ int ProtocolFtp::HandlePORT()
     }
     try{
         LOG(INFO) << "Connection Before";
+        if(m_client){
+            delete(m_client);
+            m_client = nullptr;
+        }
         m_client = new ConnectSocket(host, port, nullptr);
         LOG(INFO) << "Connection after ";
         //m_client = new ProtocolSimple(connect);
@@ -229,11 +273,48 @@ int ProtocolFtp::HandleLIST()
     sendMessage(m_sendMessage);
     try{
         ProtocolSimple ps(*m_client);
+        LOG(INFO) << "opendir : " <<  m_pwd;
         DIR* dirp = opendir(m_pwd.c_str());
+        if(dirp==NULL)
+            return HandleError(500);
+
         struct dirent * dp;
+        struct stat sb;
+        std::string fullPath;
         while ((dp = readdir(dirp)) != NULL) {
-        //    v.push_back(dp->d_name);
-            m_sendMessage = dp->d_name;
+            char auth[11] = {'-'};
+            std::stringstream ss;
+            auth[10] = 0;
+            fullPath = m_pwd + "/" + dp->d_name;
+            if (stat(fullPath.c_str(), &sb) == -1) {
+                LOG(INFO) << fullPath << " open error";
+                continue;
+            }
+            switch (sb.st_mode & S_IFMT) {
+                case S_IFBLK:  LOG(INFO) << "block device";break;
+                case S_IFCHR:  LOG(INFO) << "character device";break;
+                case S_IFDIR:  LOG(INFO) << "directory"; auth[0] = 'd'; ss << "d";break;
+                case S_IFIFO:  LOG(INFO) << "FIFO/pipe";break;
+                case S_IFLNK:  LOG(INFO) << "symlink";break;
+                case S_IFREG:  LOG(INFO) << "regular file";auth[0]='-'; ss << "-";break;
+                case S_IFSOCK: LOG(INFO) << "socket";break;
+                default:       LOG(INFO) << "unknown?";auth[0] = '-'; ss << "-";break;
+            }
+            std::string timeStr(ctime(&sb.st_ctime));
+            std::string sizeStr(std::to_string(sb.st_size));
+            for(int i = sizeStr.size() ; i < 8 ;i++)
+                sizeStr.push_back(' ');
+            ss << "rwxr-xr-x    " << sb.st_nlink << " " << sb.st_uid << "     " << sb.st_uid << "     " << sizeStr << " Dec 24  2017 " << dp->d_name;
+            LOG(INFO) << ss.str();
+            m_sendMessage = ss.str();
+            /*
+            if(dp->d_type == DT_DIR){
+                m_sendMessage = "[";
+                m_sendMessage += dp->d_name;
+                m_sendMessage += "]";
+            } else
+                m_sendMessage = dp->d_name;
+            */
             m_sendMessage += "\r\n";
             ps.sendMessage(m_sendMessage);
         }
@@ -262,10 +343,11 @@ int ProtocolFtp::HandleRETR()
         return HandleError(500);
     }
 
-    std::string filename = m_pwd + name;
+    std::string filename = m_pwd + "/" + name;
     std::ifstream m_file;
     m_file.open( filename.c_str(),std::ios::in|std::ios::binary);
     if (!m_file.is_open()){
+        LOG(INFO) << "file open error:" << filename;
         return HandleError(500);
     }
 
@@ -322,10 +404,15 @@ int ProtocolFtp::HandleCWD()
     if(c != 1){
         return HandleError(500);
     }
-    m_pwd += path;
-    m_pwd += "/";
+    if(path[0] == '/')
+        m_pwd = path;
+    else{
+        m_pwd += "/";
+        m_pwd += path;
+    }
+    //m_pwd += "/";
     LOG(INFO) << "CWD " << path << "," << m_pwd;
-    m_sendMessage = "250 Requested file action okay, completed.\n";
+    m_sendMessage = "250 Directory successfully changed.\r\n";
     sendMessage(m_sendMessage);
     return 0;
 }
@@ -337,21 +424,61 @@ int ProtocolFtp::HandleTYPE()
     return 0;
 }
 
-void ProtocolFtp::recvMessage(std::string & message)
+int ProtocolFtp::HandlePWD()
 {
-	message.clear();
-	message.reserve(8092);
-	char buffer[8093];
-    std::size_t const dataMax = 8092;
+    m_sendMessage = "257 \"";
+    m_sendMessage += m_pwd;
+    m_sendMessage += "\" is the current directory\r\n";
+    sendMessage(m_sendMessage);
+    return 0;
+}
 
-	std::size_t got = m_socket.getMessage(buffer, dataMax , [](std::size_t s, const char* buf) -> int { return true;});
-    if(got == 0){
-        std::string errmsg = std::string("ProtocolFtp::") + __func__+": got == 0";
-        throw std::runtime_error(errmsg);
+int ProtocolFtp::HandleSTOR()
+{
+    try{
+        ProtocolSimple ps(*m_client);
+        ps.recvMessage(m_recvMessage);
+        LOG(INFO) << "recvMessage:" << m_recvMessage;
+        delete m_client;
+        m_client = nullptr;
+
+    } catch(std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+    }catch(...){
+        std::cout << "catch" << std::endl;
     }
-	LOG(INFO).write(buffer, got);
-    message.assign(buffer,got);
-	//   if(got == 0)
-	//      break;
-	//}
+    m_sendMessage = "150 Ok to send data.\n";
+    sendMessage(m_sendMessage);
+    m_sendMessage = "226 Transfer complete.\n";
+    sendMessage(m_sendMessage);
+    LOG(INFO) << "STOR OK";
+    return 0;
+}
+
+int ProtocolFtp::HandleSIZE()
+{
+    return 0;
+}
+
+int ProtocolFtp::HandlePASV()
+{
+    m_sendMessage = "227 Entering Passive Mode.\n";
+    sendMessage(m_sendMessage);
+    LOG(INFO) << "PASV OK";
+    return 0;
+}
+
+int ProtocolFtp::HandleMKD()
+{
+    char name[512];
+    int c = sscanf(m_recvMessage.data(), "MKD %s", name);
+    if(c != 1 ){
+        return HandleError(500);
+    }
+    m_sendMessage = "257 Make directory ";
+    m_sendMessage += name;
+    m_sendMessage += " complete.\n";
+    sendMessage(m_sendMessage);
+    LOG(INFO) << m_sendMessage;
+    return 0;
 }

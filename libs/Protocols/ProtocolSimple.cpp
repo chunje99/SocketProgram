@@ -2,7 +2,7 @@
 #include "Socket.h"
 #include "iostream"
 
-void ProtocolSimple::sendMessage(std::string const& message)
+void ProtocolSimple::sendMessage(std::string const& message, int timeout)
 {
     m_socket.putMessage(message.c_str(), message.size());
 }
@@ -33,7 +33,7 @@ class StringSizer
         }
 };
 
-void ProtocolSimple::recvMessage(std::string & message)
+void ProtocolSimple::recvMessage(std::string & message, int timeout)
 {
     std::size_t dataRead = 0;
     message.clear();
@@ -42,7 +42,7 @@ void ProtocolSimple::recvMessage(std::string & message)
         StringSizer stringSizer(message, dataRead);
         std::size_t const dataMax = message.capacity() -1;
         char* buffer = &message[0];
-        std::size_t got = m_socket.getMessage(buffer + dataRead, dataMax - dataRead, [](std::size_t,const char* str){return true;});
+        std::size_t got = m_socket.getMessage(buffer + dataRead, dataMax - dataRead, -1, [](std::size_t,const char* str){return true;});
         std::cout.write(buffer+dataRead, got);
         dataRead += got;
         if(got == 0)

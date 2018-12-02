@@ -32,7 +32,7 @@ ProtocolHttp::~ProtocolHttp(){
     }
 }
 
-void ProtocolHttp::sendMessage(std::string const& message)
+void ProtocolHttp::sendMessage(std::string const& message, int timeout)
 {
     m_socket.putMessage(message.c_str(), message.size());
 }
@@ -63,7 +63,7 @@ class StringSizer
         }
 };
 
-void ProtocolHttp::recvMessage(std::string & message)
+void ProtocolHttp::recvMessage(std::string & message, int timeout)
 {
     std::size_t dataRead = 0;
     message.clear();
@@ -86,7 +86,7 @@ void ProtocolHttp::recvMessage(std::string & message)
         std::size_t const dataMax = message.capacity() -1;
         char* buffer = &message[0];
 
-        std::size_t got = m_socket.getMessage(buffer, dataMax , [](std::size_t s, const char* buf) -> int { return true;});
+        std::size_t got = m_socket.getMessage(buffer, dataMax , -1, [](std::size_t s, const char* buf) -> int { return true;});
         LOG(INFO).write(buffer, got);
         if(got == 0)
             break;
@@ -154,7 +154,7 @@ int ProtocolHttp::recvRequest(std::string& message){
     std::size_t const dataMax = message.capacity() -1;
     char* buffer = &message[0];
 
-    std::size_t got = m_socket.getMessage(buffer + dataRead, dataMax - dataRead, [](std::size_t s, const char* buf) {
+    std::size_t got = m_socket.getMessage(buffer + dataRead, dataMax - dataRead, -1,  [](std::size_t s, const char* buf) {
                 LOG(INFO).write(buf,s);
                 if(s==2 && strcmp(buf, "\r\n") == 0 )
                     return true;

@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include "iostream"
@@ -10,7 +11,7 @@
 #include <glog/logging.h>
 
 template<typename F>
-std::size_t IOSocket::getMessage(char* buffer, std::size_t size, F scanForEnd)
+std::size_t IOSocket::getMessage(char* buffer, std::size_t size, int timeout, F scanForEnd)
 {
     if (getSocket() == 0)
     {
@@ -19,6 +20,9 @@ std::size_t IOSocket::getMessage(char* buffer, std::size_t size, F scanForEnd)
     }
 
     std::size_t     dataRead  = 0;
+    struct timeval tv;
+    fd_set readfds;
+    int state;
     while(dataRead < size)
     {
         // The inner loop handles interactions with the socket.
@@ -60,15 +64,48 @@ std::size_t IOSocket::getMessage(char* buffer, std::size_t size, F scanForEnd)
                 break;
             }
         }else{
-            get = read(getSocket(), buffer + dataRead, size - dataRead);
-            if(get==-1){
-                std::cout << "read error: " <<  errno << "," << strerror(errno) <<  std::endl;
-                std::string errmsg = std::string("IOSocket::") + __func__ + ": getSocket()";
-                throw std::runtime_error(errmsg);
-                break;
+            if(timeout==-1){
+                state = 1;
+            }else{
+                // select time out 설저을 위한 timeval 구조체   
+                FD_ZERO(&readfds);
+                FD_SET(getSocket(), &readfds);
+                // 약 5초간 기다린다. 
+                tv.tv_sec = timeout;
+                tv.tv_usec = 0;
 
+                // 입력이 있는지 기다린다. 
+                state = select(getSocket()+1, &readfds,
+                        (fd_set *)0, (fd_set *)0, &tv);
             }
+            std::string errmsg;
+            switch(state)
+            {
+                case -1:
+                    std::cout << "read select error:" << getSocket() <<  std::endl;
+                    errmsg = std::string("IOSocket::") + __func__ + ": read select error";
+                    throw std::runtime_error(errmsg);
+                    break;
+                    // 만약 5초안에 아무런 입력이 없었다면 
+                    // Time out 발생상황이다. 
+                case 0:
 
+                        std::cout << "read timeout:" << getSocket() <<  std::endl;
+                        errmsg = std::string("IOSocket::") + __func__ + ": read timeout";
+                        throw std::runtime_error(errmsg);
+                        break;
+                        // 5초안에 입력이 들어왔을경우 처리한다. 
+                default:
+                       get = read(getSocket(), buffer + dataRead, size - dataRead);
+                       if(get==-1){
+                           std::cout << "read error: " <<  errno << "," << strerror(errno) <<  std::endl;
+                           errmsg = std::string("IOSocket::") + __func__ + ": getSocket()";
+                           throw std::runtime_error(errmsg);
+                           break;
+
+                       }
+                       break;
+            }
         }
         if (get == 0)
         {

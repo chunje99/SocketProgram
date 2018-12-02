@@ -13,8 +13,8 @@ class Protocol
         Protocol(IOSocket& socket);
         ~Protocol();
 
-        virtual void sendMessage(std::string const& message) = 0;
-        virtual void recvMessage(std::string & message) = 0;
+        virtual void sendMessage(std::string const& message, int timeout=-1) = 0;
+        virtual void recvMessage(std::string & message, int timeout=-1) = 0;
         virtual void startProtocol() = 0;
 };
 
