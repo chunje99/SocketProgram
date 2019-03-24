@@ -11,7 +11,9 @@ libSources = \
 	ProtocolFtp.cpp \
 	ProtocolFtp.h \
 	ProtocolHttp.cpp \
-	ProtocolHttp.h
+	ProtocolHttp.h \
+	ProtocolMuxer.cpp \
+	ProtocolMuxer.h
 
 libprotocol_a_SOURCES= \
    			$(libSources)

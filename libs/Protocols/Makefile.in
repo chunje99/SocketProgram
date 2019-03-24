@@ -141,14 +141,15 @@ libprotocol_a_LIBADD =
 am__objects_1 = libprotocol_a-Protocol.$(OBJEXT) \
 	libprotocol_a-ProtocolSimple.$(OBJEXT) \
 	libprotocol_a-ProtocolFtp.$(OBJEXT) \
-	libprotocol_a-ProtocolHttp.$(OBJEXT)
+	libprotocol_a-ProtocolHttp.$(OBJEXT) \
+	libprotocol_a-ProtocolMuxer.$(OBJEXT)
 am_libprotocol_a_OBJECTS = $(am__objects_1)
 libprotocol_a_OBJECTS = $(am_libprotocol_a_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libprotocol_la_LIBADD =
 am__objects_2 = libprotocol_la-Protocol.lo \
 	libprotocol_la-ProtocolSimple.lo libprotocol_la-ProtocolFtp.lo \
-	libprotocol_la-ProtocolHttp.lo
+	libprotocol_la-ProtocolHttp.lo libprotocol_la-ProtocolMuxer.lo
 am_libprotocol_la_OBJECTS = $(am__objects_2)
 libprotocol_la_OBJECTS = $(am_libprotocol_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -267,6 +268,16 @@ ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
+FFMPEG_AVCODEC_CFLAGS = @FFMPEG_AVCODEC_CFLAGS@
+FFMPEG_AVCODEC_LIBS = @FFMPEG_AVCODEC_LIBS@
+FFMPEG_AVFORMAT_CFLAGS = @FFMPEG_AVFORMAT_CFLAGS@
+FFMPEG_AVFORMAT_LIBS = @FFMPEG_AVFORMAT_LIBS@
+FFMPEG_AVUTIL_CFLAGS = @FFMPEG_AVUTIL_CFLAGS@
+FFMPEG_AVUTIL_LIBS = @FFMPEG_AVUTIL_LIBS@
+FFMPEG_SWRESAMPLE_CFLAGS = @FFMPEG_SWRESAMPLE_CFLAGS@
+FFMPEG_SWRESAMPLE_LIBS = @FFMPEG_SWRESAMPLE_LIBS@
+FFMPEG_SWSCALE_CFLAGS = @FFMPEG_SWSCALE_CFLAGS@
+FFMPEG_SWSCALE_LIBS = @FFMPEG_SWSCALE_LIBS@
 FGREP = @FGREP@
 GREP = @GREP@
 INSTALL = @INSTALL@
@@ -300,6 +311,9 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -371,7 +385,9 @@ libSources = \
 	ProtocolFtp.cpp \
 	ProtocolFtp.h \
 	ProtocolHttp.cpp \
-	ProtocolHttp.h
+	ProtocolHttp.h \
+	ProtocolMuxer.cpp \
+	ProtocolMuxer.h
 
 libprotocol_a_SOURCES = \
    			$(libSources)
@@ -500,10 +516,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_a-Protocol.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_a-ProtocolFtp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_a-ProtocolHttp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_a-ProtocolMuxer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_a-ProtocolSimple.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_la-Protocol.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_la-ProtocolFtp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_la-ProtocolHttp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_la-ProtocolMuxer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprotocol_la-ProtocolSimple.Plo@am__quote@
 
 .cpp.o:
@@ -583,6 +601,20 @@ libprotocol_a-ProtocolHttp.obj: ProtocolHttp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_a-ProtocolHttp.obj `if test -f 'ProtocolHttp.cpp'; then $(CYGPATH_W) 'ProtocolHttp.cpp'; else $(CYGPATH_W) '$(srcdir)/ProtocolHttp.cpp'; fi`
 
+libprotocol_a-ProtocolMuxer.o: ProtocolMuxer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_a-ProtocolMuxer.o -MD -MP -MF $(DEPDIR)/libprotocol_a-ProtocolMuxer.Tpo -c -o libprotocol_a-ProtocolMuxer.o `test -f 'ProtocolMuxer.cpp' || echo '$(srcdir)/'`ProtocolMuxer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_a-ProtocolMuxer.Tpo $(DEPDIR)/libprotocol_a-ProtocolMuxer.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ProtocolMuxer.cpp' object='libprotocol_a-ProtocolMuxer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_a-ProtocolMuxer.o `test -f 'ProtocolMuxer.cpp' || echo '$(srcdir)/'`ProtocolMuxer.cpp
+
+libprotocol_a-ProtocolMuxer.obj: ProtocolMuxer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_a-ProtocolMuxer.obj -MD -MP -MF $(DEPDIR)/libprotocol_a-ProtocolMuxer.Tpo -c -o libprotocol_a-ProtocolMuxer.obj `if test -f 'ProtocolMuxer.cpp'; then $(CYGPATH_W) 'ProtocolMuxer.cpp'; else $(CYGPATH_W) '$(srcdir)/ProtocolMuxer.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_a-ProtocolMuxer.Tpo $(DEPDIR)/libprotocol_a-ProtocolMuxer.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ProtocolMuxer.cpp' object='libprotocol_a-ProtocolMuxer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_a-ProtocolMuxer.obj `if test -f 'ProtocolMuxer.cpp'; then $(CYGPATH_W) 'ProtocolMuxer.cpp'; else $(CYGPATH_W) '$(srcdir)/ProtocolMuxer.cpp'; fi`
+
 libprotocol_la-Protocol.lo: Protocol.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_la-Protocol.lo -MD -MP -MF $(DEPDIR)/libprotocol_la-Protocol.Tpo -c -o libprotocol_la-Protocol.lo `test -f 'Protocol.cpp' || echo '$(srcdir)/'`Protocol.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_la-Protocol.Tpo $(DEPDIR)/libprotocol_la-Protocol.Plo
@@ -610,6 +642,13 @@ libprotocol_la-ProtocolHttp.lo: ProtocolHttp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ProtocolHttp.cpp' object='libprotocol_la-ProtocolHttp.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_la-ProtocolHttp.lo `test -f 'ProtocolHttp.cpp' || echo '$(srcdir)/'`ProtocolHttp.cpp
+
+libprotocol_la-ProtocolMuxer.lo: ProtocolMuxer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_la-ProtocolMuxer.lo -MD -MP -MF $(DEPDIR)/libprotocol_la-ProtocolMuxer.Tpo -c -o libprotocol_la-ProtocolMuxer.lo `test -f 'ProtocolMuxer.cpp' || echo '$(srcdir)/'`ProtocolMuxer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_la-ProtocolMuxer.Tpo $(DEPDIR)/libprotocol_la-ProtocolMuxer.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ProtocolMuxer.cpp' object='libprotocol_la-ProtocolMuxer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_la-ProtocolMuxer.lo `test -f 'ProtocolMuxer.cpp' || echo '$(srcdir)/'`ProtocolMuxer.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

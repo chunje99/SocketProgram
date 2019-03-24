@@ -1,0 +1,38 @@
+lib_LIBRARIES=libFfmpeg.a
+lib_LTLIBRARIES=libFfmpeg.la
+
+AM_CPPFLAGS=-I$(top_builddir)/libs/Inet
+
+libSources = \
+	muxer.cpp \
+	muxer.h
+
+libFfmpeg_a_SOURCES= \
+   			$(libSources)
+libFfmpeg_a_CFLAGS= $(AM_CFLAGS)
+libFfmpeg_a_CFLAGS+= $(FFMPEG_AVFORMAT_CFLAGS)
+libFfmpeg_a_CFLAGS+= $(FFMPEG_AVUTIL_CFLAGS)
+libFfmpeg_a_CFLAGS+= $(FFMPEG_SWSCALE_CFLAGS)
+libFfmpeg_a_CFLAGS+= $(FFMPEG_SWRESAMPLE_CFLAGS)
+libFfmpeg_a_CFLAGS+= "-D__STDC_CONSTANT_MACROS" 
+libFfmpeg_a_CXXFLAGS= $(AM_CXXFLAGS)
+libFfmpeg_a_CXXFLAGS+= $(FFMPEG_AVFORMAT_CFLAGS)
+libFfmpeg_a_CXXFLAGS+= $(FFMPEG_AVUTIL_CFLAGS)
+libFfmpeg_a_CXXFLAGS+= $(FFMPEG_SWSCALE_CFLAGS)
+libFfmpeg_a_CXXFLAGS+= $(FFMPEG_SWRESAMPLE_CFLAGS)
+libFfmpeg_a_CXXFLAGS+= "-D__STDC_CONSTANT_MACROS" 
+
+libFfmpeg_la_SOURCES= \
+   			$(libSources)
+libFfmpeg_la_CFLAGS= $(AM_CFLAGS)
+libFfmpeg_la_CFLAGS+= $(FFMPEG_AVFORMAT_CFLAGS)
+libFfmpeg_la_CFLAGS+= $(FFMPEG_AVUTIL_CFLAGS)
+libFfmpeg_la_CFLAGS+= $(FFMPEG_SWSCALE_CFLAGS)
+libFfmpeg_la_CFLAGS+= $(FFMPEG_SWRESAMPLE_CFLAGS)
+libFfmpeg_la_CFLAGS+= "-D__STDC_CONSTANT_MACROS" 
+libFfmpeg_la_CXXFLAGS= $(AM_CXXFLAGS)
+libFfmpeg_la_CXXFLAGS+= $(FFMPEG_AVFORMAT_CFLAGS)
+libFfmpeg_la_CXXFLAGS+= $(FFMPEG_AVUTIL_CFLAGS)
+libFfmpeg_la_CXXFLAGS+= $(FFMPEG_SWSCALE_CFLAGS)
+libFfmpeg_la_CXXFLAGS+= $(FFMPEG_SWRESAMPLE_CFLAGS)
+libFfmpeg_la_CXXFLAGS+= "-D__STDC_CONSTANT_MACROS" 

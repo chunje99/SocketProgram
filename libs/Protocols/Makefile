@@ -141,14 +141,15 @@ libprotocol_a_LIBADD =
 am__objects_1 = libprotocol_a-Protocol.$(OBJEXT) \
 	libprotocol_a-ProtocolSimple.$(OBJEXT) \
 	libprotocol_a-ProtocolFtp.$(OBJEXT) \
-	libprotocol_a-ProtocolHttp.$(OBJEXT)
+	libprotocol_a-ProtocolHttp.$(OBJEXT) \
+	libprotocol_a-ProtocolMuxer.$(OBJEXT)
 am_libprotocol_a_OBJECTS = $(am__objects_1)
 libprotocol_a_OBJECTS = $(am_libprotocol_a_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libprotocol_la_LIBADD =
 am__objects_2 = libprotocol_la-Protocol.lo \
 	libprotocol_la-ProtocolSimple.lo libprotocol_la-ProtocolFtp.lo \
-	libprotocol_la-ProtocolHttp.lo
+	libprotocol_la-ProtocolHttp.lo libprotocol_la-ProtocolMuxer.lo
 am_libprotocol_la_OBJECTS = $(am__objects_2)
 libprotocol_la_OBJECTS = $(am_libprotocol_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -239,13 +240,13 @@ ETAGS = etags
 CTAGS = ctags
 am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/ho80/devel/Project/SocketProgram/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/ho80/devel/git/SocketProgram/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
-AUTOCONF = ${SHELL} /home/ho80/devel/Project/SocketProgram/missing autoconf
-AUTOHEADER = ${SHELL} /home/ho80/devel/Project/SocketProgram/missing autoheader
-AUTOMAKE = ${SHELL} /home/ho80/devel/Project/SocketProgram/missing automake-1.15
+AUTOCONF = ${SHELL} /home/ho80/devel/git/SocketProgram/missing autoconf
+AUTOHEADER = ${SHELL} /home/ho80/devel/git/SocketProgram/missing autoheader
+AUTOMAKE = ${SHELL} /home/ho80/devel/git/SocketProgram/missing automake-1.15
 AWK = mawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -267,6 +268,16 @@ ECHO_N = -n
 ECHO_T = 
 EGREP = /bin/grep -E
 EXEEXT = 
+FFMPEG_AVCODEC_CFLAGS = -I/usr/include/x86_64-linux-gnu
+FFMPEG_AVCODEC_LIBS = -lavcodec
+FFMPEG_AVFORMAT_CFLAGS = -I/usr/include/x86_64-linux-gnu
+FFMPEG_AVFORMAT_LIBS = -lavformat
+FFMPEG_AVUTIL_CFLAGS = -I/usr/include/x86_64-linux-gnu
+FFMPEG_AVUTIL_LIBS = -lavutil
+FFMPEG_SWRESAMPLE_CFLAGS = -I/usr/include/x86_64-linux-gnu
+FFMPEG_SWRESAMPLE_LIBS = -lswresample
+FFMPEG_SWSCALE_CFLAGS = -I/usr/include/x86_64-linux-gnu
+FFMPEG_SWSCALE_LIBS = -lswscale
 FGREP = /bin/grep -F
 GREP = /bin/grep
 INSTALL = /usr/bin/install -c
@@ -283,7 +294,7 @@ LIPO =
 LN_S = ln -s
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} /home/ho80/devel/Project/SocketProgram/missing makeinfo
+MAKEINFO = ${SHELL} /home/ho80/devel/git/SocketProgram/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /bin/mkdir -p
 NM = /usr/bin/nm -B
@@ -300,16 +311,19 @@ PACKAGE_TARNAME = vimtest
 PACKAGE_URL = 
 PACKAGE_VERSION = 1.0
 PATH_SEPARATOR = :
+PKG_CONFIG = /usr/bin/pkg-config
+PKG_CONFIG_LIBDIR = 
+PKG_CONFIG_PATH = 
 RANLIB = ranlib
 SED = /bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
 STRIP = strip
 VERSION = 1.0
-abs_builddir = /home/ho80/devel/Project/SocketProgram/libs/Protocols
-abs_srcdir = /home/ho80/devel/Project/SocketProgram/libs/Protocols
-abs_top_builddir = /home/ho80/devel/Project/SocketProgram
-abs_top_srcdir = /home/ho80/devel/Project/SocketProgram
+abs_builddir = /home/ho80/devel/git/SocketProgram/libs/Protocols
+abs_srcdir = /home/ho80/devel/git/SocketProgram/libs/Protocols
+abs_top_builddir = /home/ho80/devel/git/SocketProgram
+abs_top_srcdir = /home/ho80/devel/git/SocketProgram
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -339,7 +353,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/ho80/devel/Project/SocketProgram/install-sh
+install_sh = ${SHELL} /home/ho80/devel/git/SocketProgram/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -371,7 +385,9 @@ libSources = \
 	ProtocolFtp.cpp \
 	ProtocolFtp.h \
 	ProtocolHttp.cpp \
-	ProtocolHttp.h
+	ProtocolHttp.h \
+	ProtocolMuxer.cpp \
+	ProtocolMuxer.h
 
 libprotocol_a_SOURCES = \
    			$(libSources)
@@ -500,10 +516,12 @@ distclean-compile:
 include ./$(DEPDIR)/libprotocol_a-Protocol.Po
 include ./$(DEPDIR)/libprotocol_a-ProtocolFtp.Po
 include ./$(DEPDIR)/libprotocol_a-ProtocolHttp.Po
+include ./$(DEPDIR)/libprotocol_a-ProtocolMuxer.Po
 include ./$(DEPDIR)/libprotocol_a-ProtocolSimple.Po
 include ./$(DEPDIR)/libprotocol_la-Protocol.Plo
 include ./$(DEPDIR)/libprotocol_la-ProtocolFtp.Plo
 include ./$(DEPDIR)/libprotocol_la-ProtocolHttp.Plo
+include ./$(DEPDIR)/libprotocol_la-ProtocolMuxer.Plo
 include ./$(DEPDIR)/libprotocol_la-ProtocolSimple.Plo
 
 .cpp.o:
@@ -583,6 +601,20 @@ libprotocol_a-ProtocolHttp.obj: ProtocolHttp.cpp
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_a-ProtocolHttp.obj `if test -f 'ProtocolHttp.cpp'; then $(CYGPATH_W) 'ProtocolHttp.cpp'; else $(CYGPATH_W) '$(srcdir)/ProtocolHttp.cpp'; fi`
 
+libprotocol_a-ProtocolMuxer.o: ProtocolMuxer.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_a-ProtocolMuxer.o -MD -MP -MF $(DEPDIR)/libprotocol_a-ProtocolMuxer.Tpo -c -o libprotocol_a-ProtocolMuxer.o `test -f 'ProtocolMuxer.cpp' || echo '$(srcdir)/'`ProtocolMuxer.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_a-ProtocolMuxer.Tpo $(DEPDIR)/libprotocol_a-ProtocolMuxer.Po
+#	$(AM_V_CXX)source='ProtocolMuxer.cpp' object='libprotocol_a-ProtocolMuxer.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_a-ProtocolMuxer.o `test -f 'ProtocolMuxer.cpp' || echo '$(srcdir)/'`ProtocolMuxer.cpp
+
+libprotocol_a-ProtocolMuxer.obj: ProtocolMuxer.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_a-ProtocolMuxer.obj -MD -MP -MF $(DEPDIR)/libprotocol_a-ProtocolMuxer.Tpo -c -o libprotocol_a-ProtocolMuxer.obj `if test -f 'ProtocolMuxer.cpp'; then $(CYGPATH_W) 'ProtocolMuxer.cpp'; else $(CYGPATH_W) '$(srcdir)/ProtocolMuxer.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_a-ProtocolMuxer.Tpo $(DEPDIR)/libprotocol_a-ProtocolMuxer.Po
+#	$(AM_V_CXX)source='ProtocolMuxer.cpp' object='libprotocol_a-ProtocolMuxer.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_a_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_a-ProtocolMuxer.obj `if test -f 'ProtocolMuxer.cpp'; then $(CYGPATH_W) 'ProtocolMuxer.cpp'; else $(CYGPATH_W) '$(srcdir)/ProtocolMuxer.cpp'; fi`
+
 libprotocol_la-Protocol.lo: Protocol.cpp
 	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_la-Protocol.lo -MD -MP -MF $(DEPDIR)/libprotocol_la-Protocol.Tpo -c -o libprotocol_la-Protocol.lo `test -f 'Protocol.cpp' || echo '$(srcdir)/'`Protocol.cpp
 	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_la-Protocol.Tpo $(DEPDIR)/libprotocol_la-Protocol.Plo
@@ -610,6 +642,13 @@ libprotocol_la-ProtocolHttp.lo: ProtocolHttp.cpp
 #	$(AM_V_CXX)source='ProtocolHttp.cpp' object='libprotocol_la-ProtocolHttp.lo' libtool=yes \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_la-ProtocolHttp.lo `test -f 'ProtocolHttp.cpp' || echo '$(srcdir)/'`ProtocolHttp.cpp
+
+libprotocol_la-ProtocolMuxer.lo: ProtocolMuxer.cpp
+	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -MT libprotocol_la-ProtocolMuxer.lo -MD -MP -MF $(DEPDIR)/libprotocol_la-ProtocolMuxer.Tpo -c -o libprotocol_la-ProtocolMuxer.lo `test -f 'ProtocolMuxer.cpp' || echo '$(srcdir)/'`ProtocolMuxer.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libprotocol_la-ProtocolMuxer.Tpo $(DEPDIR)/libprotocol_la-ProtocolMuxer.Plo
+#	$(AM_V_CXX)source='ProtocolMuxer.cpp' object='libprotocol_la-ProtocolMuxer.lo' libtool=yes \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprotocol_la_CXXFLAGS) $(CXXFLAGS) -c -o libprotocol_la-ProtocolMuxer.lo `test -f 'ProtocolMuxer.cpp' || echo '$(srcdir)/'`ProtocolMuxer.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo
