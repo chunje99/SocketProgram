@@ -2,6 +2,8 @@
 
 int main(int argc, char **argv)
 {
+    av_register_all();
+    avcodec_register_all();
     OutputStream video_st = { 0 }, audio_st = { 0 };
     const char *filename;
     AVOutputFormat *fmt;
